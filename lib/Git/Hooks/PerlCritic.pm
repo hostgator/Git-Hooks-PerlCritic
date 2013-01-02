@@ -53,7 +53,6 @@ PREPARE_COMMIT_MSG {
 		# a space is being prepended, suspect internal join, remove it
 		( $contents .= "@$violations" ) =~ s/^\ #//xmsg;
 
-		# remove mysterious whitespace added a the beginning of line
 		$file->spew( $contents );
 	}
 };
