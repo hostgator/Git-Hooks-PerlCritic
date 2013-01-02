@@ -73,4 +73,12 @@ PRE_COMMIT {
 
 1;
 
-# ABSTRACT: Git::Hooks::PerlCritic
+# ABSTRACT: Perl Critic hooks for git
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Git::Hooks>
+
+=back
