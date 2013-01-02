@@ -6,6 +6,7 @@ use warnings;
 # VERSION
 
 use Carp;
+use Module::Load 'load';
 use Git::Hooks;
 use Perl::Critic;
 use Perl::Critic::Violation;
@@ -40,6 +41,19 @@ PREPARE_COMMIT_MSG {
 	my $changed    = changed( $git );
 	my $violations = check_violations( $changed );
 
+	if ( @$violations ) {
+		# set the format to be a comment
+		my $fmt = Perl::Critic::Violation::get_format;
+		Perl::Critic::Violation::set_format( "# $fmt" );
+
+		my $pcf = 'Path::Class::File'; load $pcf;
+		my $file     = $pcf->new( $commit_msg_file );
+		my $contents = $file->slurp;
+
+		$contents .= "@$violations";
+
+		$file->spew( $contents );
+	}
 };
 
 PRE_COMMIT {
