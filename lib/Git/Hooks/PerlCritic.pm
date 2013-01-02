@@ -50,8 +50,10 @@ PREPARE_COMMIT_MSG {
 		my $file     = $pcf->new( $commit_msg_file );
 		my $contents = $file->slurp;
 
-		$contents .= "@$violations";
+		# a space is being prepended, suspect internal join, remove it
+		( $contents .= "@$violations" ) =~ s/^\ #//xmsg;
 
+		# remove mysterious whitespace added a the beginning of line
 		$file->spew( $contents );
 	}
 };
