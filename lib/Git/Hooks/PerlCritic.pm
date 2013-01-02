@@ -39,6 +39,7 @@ PREPARE_COMMIT_MSG {
 
 	my $changed    = changed( $git );
 	my $violations = check_violations( $changed );
+
 };
 
 PRE_COMMIT {
@@ -48,8 +49,10 @@ PRE_COMMIT {
 	my $violations = check_violations( $changed );
 
 	if ( @$violations ) {
-		croak 'please fix the following violations before committing: '
-			. @$violations;
+		print @$violations;
+		# . operator causes the array ref to give count, otherwise it would
+		# stringify
+		croak 'please fix ' . @$violations . ' perl critic errors before committing';
 	}
 };
 
