@@ -11,7 +11,7 @@ use Git::Hooks;
 use Perl::Critic;
 use Perl::Critic::Violation;
 
-sub changed {
+sub _changed {
 	my $git = shift;
 
 	my @changed
@@ -22,7 +22,7 @@ sub changed {
 	return \@changed;
 }
 
-sub check_violations {
+sub _check_violations {
 	my $files = shift;
 
 	my @violations;
@@ -38,8 +38,8 @@ sub check_violations {
 PREPARE_COMMIT_MSG {
 	my ( $git, $commit_msg_file ) = @_;
 
-	my $changed    = changed( $git );
-	my $violations = check_violations( $changed );
+	my $changed    = _changed( $git );
+	my $violations = _check_violations( $changed );
 
 	if ( @$violations ) {
 		# set the format to be a comment
@@ -60,8 +60,8 @@ PREPARE_COMMIT_MSG {
 PRE_COMMIT {
 	my $git = shift;
 
-	my $changed    = changed( $git );
-	my $violations = check_violations( $changed );
+	my $changed    = _changed( $git );
+	my $violations = _check_violations( $changed );
 
 	if ( @$violations ) {
 		print @$violations;
