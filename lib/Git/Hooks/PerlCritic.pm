@@ -5,7 +5,6 @@ use warnings;
 
 # VERSION
 
-use DDP;
 use Carp;
 use Git::Hooks;
 use Perl::Critic;
@@ -25,8 +24,6 @@ sub changed {
 sub check_violations {
 	my $files = shift;
 
-	p $files;
-
 	my @violations;
 	foreach my $file ( @$files ) {
 		state $critic = Perl::Critic->new;
@@ -34,7 +31,6 @@ sub check_violations {
 		@violations = $critic->critique( $file );
 	}
 
-	p @violations;
 	return \@violations;
 }
 
@@ -47,8 +43,6 @@ PREPARE_COMMIT_MSG {
 
 PRE_COMMIT {
 	my $git = shift;
-
-	carp 'Running';
 
 	my $changed    = changed( $git );
 	my $violations = check_violations( $changed );
