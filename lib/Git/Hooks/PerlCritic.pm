@@ -99,10 +99,16 @@ Then you should choose to use only one of the available hooks.
 	ln -s git-hooks.pl pre-commit
 	git config --add githooks.pre-commit PerlCritic
 
+This hook will prevent a commit that doesn't pass L<Perl::Critic> from being
+commited.
+
 =hook prepare-commit-msg
 
 	ln -s git-hooks.pl prepare-commit-msg
 	git config --add githooks.preprare-commit-msg PerlCritic
+
+This hook will simply append commented out critic warnings to the commit
+message, so you may review them before commiting.
 
 =head1 SEE ALSO
 
