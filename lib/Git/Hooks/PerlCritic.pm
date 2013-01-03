@@ -76,7 +76,7 @@ PRE_COMMIT {
 		print @$violations;
 		# . operator causes the array ref to give count, otherwise it would
 		# stringify
-		croak 'please fix ' . @$violations . ' perl critic errors before committing';
+		croak '# please fix ' . @$violations . ' perl critic errors before committing';
 	}
 };
 
