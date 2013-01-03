@@ -108,7 +108,8 @@ committed.
 	git config --add githooks.preprare-commit-msg PerlCritic
 
 This hook will simply append commented out critic warnings to the commit
-message, so you may review them before committing.
+message, so you may review them before committing. Note: requires
+L<Path::Class::File>.
 
 =head1 SEE ALSO
 
