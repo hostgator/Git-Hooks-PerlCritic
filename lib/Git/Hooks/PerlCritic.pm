@@ -20,19 +20,6 @@ sub _changed {
 	return \@changed;
 }
 
-sub _check_violations {
-	my $files = shift;
-
-	my @violations;
-	foreach my $file ( @$files ) {
-		state $critic = _set_critic;
-
-		@violations = $critic->critique( $file );
-	}
-
-	return \@violations;
-}
-
 sub _set_critic {
 	load 'Perl::Critic';
 	load 'Perl::Critic::Violation';
@@ -46,6 +33,19 @@ sub _set_critic {
 	Perl::Critic::Violation::set_format( "# $fmt" );
 
 	return $pc;
+}
+
+sub _check_violations {
+	my $files = shift;
+
+	my @violations;
+	foreach my $file ( @$files ) {
+		state $critic = _set_critic;
+
+		@violations = $critic->critique( $file );
+	}
+
+	return \@violations;
 }
 
 PREPARE_COMMIT_MSG {
