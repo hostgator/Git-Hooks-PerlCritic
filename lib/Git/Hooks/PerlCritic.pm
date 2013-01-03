@@ -8,8 +8,6 @@ use warnings;
 use Carp;
 use Module::Load 'load';
 use Git::Hooks;
-use Perl::Critic;
-use Perl::Critic::Violation;
 
 sub _changed {
 	my $git = shift;
@@ -27,12 +25,27 @@ sub _check_violations {
 
 	my @violations;
 	foreach my $file ( @$files ) {
-		state $critic = Perl::Critic->new;
+		state $critic = _set_critic;
 
 		@violations = $critic->critique( $file );
 	}
 
 	return \@violations;
+}
+
+sub _set_critic {
+	load 'Perl::Critic';
+	load 'Perl::Critic::Violation';
+	load 'Perl::Critic::Utils';
+
+	my $pc = Perl::Critic->new;
+	my $verbosity = $critic->config->verbose;
+
+	# set the format to be a comment
+	my $fmt = Perl::Critic::Utils::verbosity_to_format( $verbosity );
+	Perl::Critic::Violation::set_format( "# $fmt" );
+
+	return $pc;
 }
 
 PREPARE_COMMIT_MSG {
@@ -42,10 +55,6 @@ PREPARE_COMMIT_MSG {
 	my $violations = _check_violations( $changed );
 
 	if ( @$violations ) {
-		# set the format to be a comment
-		my $fmt = Perl::Critic::Violation::get_format;
-		Perl::Critic::Violation::set_format( "# $fmt" );
-
 		my $pcf = 'Path::Class::File'; load $pcf;
 		my $file     = $pcf->new( $commit_msg_file );
 		my $contents = $file->slurp;
