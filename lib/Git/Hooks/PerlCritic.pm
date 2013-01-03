@@ -39,7 +39,7 @@ sub _set_critic {
 	load 'Perl::Critic::Utils';
 
 	my $pc = Perl::Critic->new;
-	my $verbosity = $critic->config->verbose;
+	my $verbosity = $pc->config->verbose;
 
 	# set the format to be a comment
 	my $fmt = Perl::Critic::Utils::verbosity_to_format( $verbosity );
