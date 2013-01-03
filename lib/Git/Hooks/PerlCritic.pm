@@ -84,10 +84,32 @@ PRE_COMMIT {
 
 # ABSTRACT: Perl Critic hooks for git
 
+=head1 DESCRIPTION
+
+Allows you to utilize L<Perl::Critic> via
+L<git hooks|http://www.kernel.org/pub/software/scm/git/docs/githooks.html>
+using the L<Git::Hooks> framework.
+
+First setup L<git-hooks.pl|Git::Hooks/"USAGE">
+
+Then you should choose to use only one of the available hooks.
+
+=hook pre-commit
+
+	ln -s git-hooks.pl pre-commit
+	git config --add githooks.pre-commit PerlCritic
+
+=hook prepare-commit-msg
+
+	ln -s git-hooks.pl prepare-commit-msg
+	git config --add githooks.preprare-commit-msg PerlCritic
+
 =head1 SEE ALSO
 
 =over
 
 =item L<Git::Hooks>
+
+=item L<Perl::Critic>
 
 =back
